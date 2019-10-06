@@ -9,3 +9,6 @@
 
 ### Installed pip packages
 `pip install mysqlclient`
+
+### List available routes
+`$ ./manage.py show_urls
