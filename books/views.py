@@ -17,7 +17,14 @@ from tablib import Dataset
 
 # /books
 def index(request):
+  # https://stackoverflow.com/questions/150505/capturing-url-parameters-in-request-get
   books = Book.objects.all()
+
+  order_by = request.GET.get('order_by')
+
+  if order_by:
+    # https://books.agiliq.com/projects/django-orm-cookbook/en/latest/asc_or_desc.html
+    books = Book.objects.all().order_by(order_by)
 
   template = loader.get_template('books/index.html')
 
@@ -50,8 +57,8 @@ def checkout(request, book_id):
     return redirect('/books')
 
 # I was going to use 'return' for this action
-# however it seems its a reserved word in python
-# which makes sense
+# however it seems it's a reserved word in python
+# which makes sense :P
 def checkin(request, book_id):
   if request.POST:
     book = Book.objects.get(id=book_id)
