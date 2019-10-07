@@ -54,6 +54,7 @@ def checkout(request, book_id):
     book.checked_out = True
     book.save()
 
+    # force client back to books index action
     return redirect('/books')
 
 # I was going to use 'return' for this action
@@ -67,4 +68,5 @@ def checkin(request, book_id):
     book.checked_out = False
     book.save()
 
+    # force client back to books index action
     return redirect('/books')
