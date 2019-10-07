@@ -26,7 +26,7 @@ def index(request):
 
 # /books/1
 def detail(request, book_id):
-  book = Book.objects.get(book_id)
+  book = Book.objects.get(id=book_id)
 
   template = loader.get_template('books/detail.html')
 
