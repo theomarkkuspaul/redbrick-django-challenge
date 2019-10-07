@@ -1,7 +1,29 @@
 {% if books %}
     <ul>
     {% for book in books %}
-        <li><a href="/books/{{ book.id }}/">{{ book.book_title }}</a></li>
+        <li>
+          <a href="/books/{{ book.id }}/">{{ book.book_title }}</a>
+
+          {% if book.checked_out %}
+
+          <form method="POST" action="/books/{{ book.id }}/checkin">
+            <!-- https://docs.djangoproject.com/en/2.2/ref/csrf/#how-to-use-it -->
+            {% csrf_token %}
+
+            <input type="submit" name="book_id" value="Return">
+          </form>
+
+          {% else %}
+
+          <form method="POST" action="/books/{{ book.id }}/checkout">
+            <!-- https://docs.djangoproject.com/en/2.2/ref/csrf/#how-to-use-it -->
+            {% csrf_token %}
+
+            <input type="submit" name="book_id" value="Checkout">
+          </form>
+
+          {% endif %}
+        </li>
     {% endfor %}
     </ul>
 {% else %}

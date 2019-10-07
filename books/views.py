@@ -3,6 +3,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 
+# https://realpython.com/django-redirects/#django-redirects-a-super-simple-example
+from django.shortcuts import redirect
+
 # models
 from .models import Book
 
@@ -35,3 +38,26 @@ def detail(request, book_id):
   }
 
   return HttpResponse(template.render(context, request))
+
+def checkout(request, book_id):
+  if request.POST:
+    book = Book.objects.get(id=book_id)
+
+    # https://docs.djangoproject.com/en/2.2/topics/db/queries/#saving-changes-to-objects
+    book.checked_out = True
+    book.save()
+
+    return redirect('/books')
+
+# I was going to use 'return' for this action
+# however it seems its a reserved word in python
+# which makes sense
+def checkin(request, book_id):
+  if request.POST:
+    book = Book.objects.get(id=book_id)
+
+    # https://docs.djangoproject.com/en/2.2/topics/db/queries/#saving-changes-to-objects
+    book.checked_out = False
+    book.save()
+
+    return redirect('/books')
