@@ -20,14 +20,19 @@ def index(request):
   # https://stackoverflow.com/questions/150505/capturing-url-parameters-in-request-get
   books = Book.objects.all()
 
+  # retrieve `?order_by` query param from url str
+  # store in local var
   order_by = request.GET.get('order_by')
 
+  # if the param is present
   if order_by:
     # https://books.agiliq.com/projects/django-orm-cookbook/en/latest/asc_or_desc.html
     books = Book.objects.all().order_by(order_by)
 
+  # load template
   template = loader.get_template('books/index.html')
 
+  # generate local context from db to pump data into the view template
   context = {
     'books': books,
   }
@@ -36,6 +41,7 @@ def index(request):
 
 # /books/1
 def detail(request, book_id):
+  # find book by id from route
   book = Book.objects.get(id=book_id)
 
   template = loader.get_template('books/detail.html')
@@ -47,6 +53,7 @@ def detail(request, book_id):
   return HttpResponse(template.render(context, request))
 
 def checkout(request, book_id):
+  # check if request is a POST method
   if request.POST:
     book = Book.objects.get(id=book_id)
 

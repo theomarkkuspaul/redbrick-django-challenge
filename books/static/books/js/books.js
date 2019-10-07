@@ -5,7 +5,6 @@ window.addEventListener('load', function() {
 
 function maintainFilterSelection () {
   // https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
-
   // instantiate url search param object from provided query in url
   const params = new URLSearchParams(window.location.search);
 
