@@ -1,0 +1,57 @@
+{% load static %}
+
+<head>
+  <!-- https://docs.djangoproject.com/en/2.2/howto/static-files/#configuring-static-files -->
+  <script src="{% static 'books/js/books.js' %}"></script>
+</head>
+
+<h1>We have the Books!</h1>
+
+
+<h3>Order by</h3>
+<select id="books-order-by">
+  <option value="book_desc">book_desc</option>
+  <option value="book_title">book_title</option>
+  <option value="book_edition">book_edition</option>
+  <option value="book_rating">book_rating</option>
+  <option value="book_isbn">book_isbn</option>
+  <option value="book_pages">book_pages</option>
+  <option value="book_rating_count">book_rating_count</option>
+  <option value="book_review_count">book_review_count</option>
+  <option value="book_authors">book_authors</option>
+  <option value="genres">genres</option>
+  <option value="image_url">image_url</option>
+  <option value="checked_out">checked_out</option>
+</select>
+
+{% if books %}
+    <ul>
+    {% for book in books %}
+        <li>
+          <a href="/books/{{ book.id }}/">{{ book.book_title }}</a>
+
+          {% if book.checked_out %}
+
+          <form method="POST" action="/books/{{ book.id }}/checkin">
+            <!-- https://docs.djangoproject.com/en/2.2/ref/csrf/#how-to-use-it -->
+            {% csrf_token %}
+
+            <input type="submit" name="book_id" value="Return">
+          </form>
+
+          {% else %}
+
+          <form method="POST" action="/books/{{ book.id }}/checkout">
+            <!-- https://docs.djangoproject.com/en/2.2/ref/csrf/#how-to-use-it -->
+            {% csrf_token %}
+
+            <input type="submit" name="book_id" value="Checkout">
+          </form>
+
+          {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No books are available.</p>
+{% endif %}
